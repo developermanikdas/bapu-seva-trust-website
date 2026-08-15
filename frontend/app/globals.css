@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* 4-Shade Blue Palette: #0A2647 | #144272 | #205295 | #2C74B3 */
+    --color-navy-dark: 212 75% 16%;     /* #0A2647 */
+    --color-blue-primary: 211 70% 26%;  /* #144272 */
+    --color-blue-royal: 214 64% 35%;    /* #205295 */
+    --color-blue-accent: 208 60% 44%;   /* #2C74B3 */
+
+    --background: 210 25% 97%;
+    --foreground: 212 75% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 212 75% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 212 75% 12%;
+
+    --primary: 211 70% 26%;             /* #144272 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 214 64% 35%;           /* #205295 */
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 20% 92%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 208 60% 44%;              /* #2C74B3 */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 208 60% 44%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 212 75% 16%;   /* #0A2647 */
+    --sidebar-foreground: 210 25% 97%;
+    --sidebar-primary: 208 60% 44%;      /* #2C74B3 */
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 211 70% 26%;       /* #144272 */
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 211 70% 22%;
+    --sidebar-ring: 208 60% 44%;
+
+    --font-display: 'DM Serif Display', serif;
+    --font-body: 'DM Sans', sans-serif;
+
+    --gradient-warm: linear-gradient(135deg, #144272, #205295, #2C74B3);
+    --gradient-hero-overlay: linear-gradient(to bottom, rgba(10, 38, 71, 0.75), rgba(10, 38, 71, 0.90));
+    --gradient-section: linear-gradient(180deg, #F4F7FA, #E9EFF6);
+    --shadow-warm: 0 10px 40px -12px rgba(32, 82, 149, 0.35);
+    --shadow-card: 0 4px 24px -4px rgba(10, 38, 71, 0.08);
+  }
+
+  .dark {
+    --background: 212 75% 10%;
+    --foreground: 210 25% 96%;
+    --card: 212 75% 14%;
+    --card-foreground: 210 25% 96%;
+    --popover: 212 75% 14%;
+    --popover-foreground: 210 25% 96%;
+    --primary: 208 60% 44%;              /* #2C74B3 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 214 64% 35%;            /* #205295 */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 212 50% 20%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 211 70% 26%;               /* #144272 */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 212 50% 22%;
+    --input: 212 50% 22%;
+    --ring: 208 60% 44%;
+    --sidebar-background: 212 75% 8%;
+    --sidebar-foreground: 210 25% 96%;
+    --sidebar-primary: 208 60% 44%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 212 50% 18%;
+    --sidebar-accent-foreground: 210 25% 96%;
+    --sidebar-border: 212 50% 20%;
+    --sidebar-ring: 208 60% 44%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply px-6 py-20 md:px-12 lg:px-20 xl:px-32;
+  }
+  .container-narrow {
+    @apply max-w-6xl mx-auto;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

@@ -1,0 +1,230 @@
+import { getCliClient } from 'sanity/cli'
+
+const client = getCliClient({ apiVersion: '2024-01-01' })
+
+async function seed() {
+  console.log('Seeding initial documents to Sanity production dataset...')
+
+  // 1. Homepage Singleton
+  await client.createOrReplace({
+    _id: 'homePage',
+    _type: 'homePage',
+    heroHeadline: 'Empowering Communities, Restoring Hope & Transforming Rural Lives',
+    heroSubheadline: 'Bapu Seva Trust works at the grassroots level across India to drive sustainable rural development, quality education, accessible healthcare, and women empowerment.',
+    locationBadge: 'Headquartered in Gujarat, Serving Pan-India',
+    impactStat1Number: '50,000+',
+    impactStat1Label: 'Lives Impacted',
+    impactStat2Number: '120+',
+    impactStat2Label: 'Villages Covered',
+    impactStat3Number: '15+',
+    impactStat3Label: 'Years of Service',
+    aboutHeading: 'Driven by Gandhian Values of Seva, Equality & Self-Reliance',
+    aboutParagraph1: 'Founded with a profound commitment to human dignity and rural advancement, Bapu Seva Trust (BST) works relentlessly to uplift marginalized communities through holistic community-led development programs.',
+    aboutParagraph2: 'From establishing child learning centers to running mobile health clinics and organizing self-help groups for women, our interventions are designed for long-term sustainability.',
+  })
+
+  // 2. Programs
+  const programs = [
+    {
+      _id: 'program-education',
+      _type: 'program',
+      title: 'Shiksha Bapu Learning Centers',
+      slug: { _type: 'slug', current: 'shiksha-bapu-learning-centers' },
+      category: 'Education',
+      shortDescription: 'Free after-school remedial education and digital literacy for underprivileged rural children.',
+      fullDescription: 'Providing quality foundational learning, digital skills, and nutrition kits to ensure zero school dropouts in rural hamlets.',
+      beneficiariesCount: 12500,
+      location: 'Gujarat & Rajasthan Villages',
+      startDate: '2015-06-01',
+      status: 'Active',
+      featured: true,
+      keyHighlights: ['Over 12,500 children enrolled', '100% pass rate in grade 10 board exams', '50+ digital learning labs setup'],
+    },
+    {
+      _id: 'program-healthcare',
+      _type: 'program',
+      title: 'Arogya Seva Mobile Clinics',
+      slug: { _type: 'slug', current: 'arogya-seva-mobile-clinics' },
+      category: 'Healthcare',
+      shortDescription: 'Mobile healthcare vans delivering free medical checkups, essential medicines, and maternal care to remote hamlets.',
+      fullDescription: 'Bringing doctors, diagnostic equipment, and free prescription medicines directly to doorstep communities lacking primary healthcare centers.',
+      beneficiariesCount: 18000,
+      location: 'Sabarkantha & Banaskantha Districts',
+      startDate: '2018-01-15',
+      status: 'Active',
+      featured: true,
+      keyHighlights: ['18,000+ patient consultations annually', 'Free eye checkups & specs distribution', 'Maternal & child health monitoring'],
+    },
+    {
+      _id: 'program-environment',
+      _type: 'program',
+      title: 'Hariyali Rural Afforestation',
+      slug: { _type: 'slug', current: 'hariyali-rural-afforestation' },
+      category: 'Environment',
+      shortDescription: 'Community tree plantation, rainwater harvesting structures, and organic farming workshops.',
+      fullDescription: 'Restoring local ecology through native tree plantations, check dam construction, and training smallholder farmers in natural farming.',
+      beneficiariesCount: 8500,
+      location: 'North Gujarat Region',
+      startDate: '2020-07-01',
+      status: 'Active',
+      featured: true,
+      keyHighlights: ['100,000+ native saplings planted', '45 rainwater harvesting check dams built', '500+ farmers trained in zero-budget organic farming'],
+    },
+    {
+      _id: 'program-empowerment',
+      _type: 'program',
+      title: 'Nari Shakti Micro-Enterprise Initiative',
+      slug: { _type: 'slug', current: 'nari-shakti-micro-enterprise' },
+      category: 'Empowerment',
+      shortDescription: 'Skill training in tailoring, handicraft making, and financial literacy for rural women.',
+      fullDescription: 'Empowering rural women by forming Self-Help Groups (SHGs), providing micro-credit support, and establishing sustainable village enterprises.',
+      beneficiariesCount: 6200,
+      location: 'Patan & Mehsana Villages',
+      startDate: '2017-03-08',
+      status: 'Active',
+      featured: false,
+      keyHighlights: ['85 Self-Help Groups formed', '6,200+ women earning independent incomes', 'Market link-ups established for handicraft products'],
+    },
+  ]
+
+  for (const prog of programs) {
+    await client.createOrReplace(prog)
+  }
+
+  // 3. News
+  const newsItems = [
+    {
+      _id: 'news-annual-health-camp',
+      _type: 'news',
+      title: 'Bapu Seva Trust Conducts Mega Free Health Camp in Sabarkantha',
+      slug: { _type: 'slug', current: 'mega-free-health-camp-sabarkantha' },
+      category: 'Events',
+      publishedAt: '2026-02-10T10:00:00Z',
+      excerpt: 'Over 1,200 villagers received free medical consults, blood tests, and corrective eye surgeries during the 3-day medical camp.',
+      content: 'Bapu Seva Trust successfully organized a 3-day mega health camp in Sabarkantha district in collaboration with volunteer doctors from Ahmedabad.',
+      location: 'Sabarkantha, Gujarat',
+      featured: true,
+    },
+    {
+      _id: 'news-learning-center-expansion',
+      _type: 'news',
+      title: '15 New Shiksha Bapu Centers Launched Across Rural Schools',
+      slug: { _type: 'slug', current: 'new-learning-centers-launched' },
+      category: 'Press Release',
+      publishedAt: '2026-01-20T09:00:00Z',
+      excerpt: 'Expanding educational outreach to cover 1,500 additional primary school students with solar-powered smart digital classrooms.',
+      content: 'With generous CSR support, Bapu Seva Trust has opened 15 new learning centers equipped with tablets, solar power, and trained community tutors.',
+      location: 'Banaskantha & Patan',
+      featured: true,
+    },
+  ]
+
+  for (const news of newsItems) {
+    await client.createOrReplace(news)
+  }
+
+  // 4. Impact Stories
+  const impactStories = [
+    {
+      _id: 'story-sunita-patel',
+      _type: 'impactStory',
+      title: 'From Household Worker to Micro-Entrepreneur: Sunita’s Journey',
+      slug: { _type: 'slug', current: 'sunitas-journey' },
+      beneficiaryName: 'Sunita Patel',
+      location: 'Vadnagar, Gujarat',
+      programCategory: 'Empowerment',
+      quote: 'Joining the Nari Shakti SHG gave me financial independence. Today, I employ 4 other women in my tailoring unit.',
+      storySummary: 'Sunita took a micro-loan of ₹10,000 from the BST Self-Help Group to buy a sewing machine. Within 2 years, her enterprise grew into a registered rural garment unit.',
+      outcomes: ['Monthly income increased 4x', 'Children enrolled in private school', 'Elected head of village SHG federation'],
+      featured: true,
+    },
+    {
+      _id: 'story-rahul-kumar',
+      _type: 'impactStory',
+      title: 'First-Generation Scholar Rahul Secures University Admission',
+      slug: { _type: 'slug', current: 'rahuls-scholarship-story' },
+      beneficiaryName: 'Rahul Kumar',
+      location: 'Himmatnagar, Gujarat',
+      programCategory: 'Education',
+      quote: 'Without the evening classes at Shiksha Bapu Center, I could never have cleared the state merit scholarship exam.',
+      storySummary: 'Rahul, son of a daily-wage agricultural laborer, attended BST remedial classes for 4 years and scored 94% in his grade 10 exams.',
+      outcomes: ['Awarded 100% state scholarship', 'Pursuing Diploma in Computer Science', 'Mentors younger students at BST center'],
+      featured: true,
+    },
+  ]
+
+  for (const story of impactStories) {
+    await client.createOrReplace(story)
+  }
+
+  // 5. Team Members
+  const team = [
+    {
+      _id: 'team-ramesh-patel',
+      _type: 'teamMember',
+      name: 'Shri Ramesh B. Patel',
+      role: 'Founder & Managing Trustee',
+      category: 'Trustees',
+      bio: 'Over 30 years of dedicated service in rural development, social reform, and Gandhian community empowerment initiatives.',
+      email: 'ramesh@bapusevatrust.org',
+      order: 1,
+    },
+    {
+      _id: 'team-dr-meena-shah',
+      _type: 'teamMember',
+      name: 'Dr. Meena Shah',
+      role: 'Director of Healthcare Operations',
+      category: 'Leadership',
+      bio: 'Medical doctor with 15+ years experience designing rural healthcare delivery systems and maternal health programs.',
+      email: 'meena@bapusevatrust.org',
+      order: 2,
+    },
+    {
+      _id: 'team-vikram-singh',
+      _type: 'teamMember',
+      name: 'Vikram Singh',
+      role: 'Head of Field Operations & Education',
+      category: 'Field Staff',
+      bio: 'Leads a network of 120+ community coordinators across North Gujarat for educational and livelihood initiatives.',
+      email: 'vikram@bapusevatrust.org',
+      order: 3,
+    },
+  ]
+
+  for (const member of team) {
+    await client.createOrReplace(member)
+  }
+
+  // 6. Reports & Audits
+  const reports = [
+    {
+      _id: 'report-2024-2025',
+      _type: 'report',
+      title: 'Annual Financial & Impact Report FY 2024-25',
+      category: 'Annual Reports',
+      year: '2024-2025',
+      publishedDate: '2025-06-30',
+      summary: 'Audited financial statements, governance disclosures, and detailed program output metrics for FY 2024-25.',
+    },
+    {
+      _id: 'report-80g-certificate',
+      _type: 'report',
+      title: '12A & 80G Tax Exemption Certificate',
+      category: 'Audits & Compliance',
+      year: 'Permanent',
+      publishedDate: '2021-04-01',
+      summary: 'Official registration certificate under Section 80G of Income Tax Act offering 50% tax benefit to Indian donors.',
+    },
+  ]
+
+  for (const rep of reports) {
+    await client.createOrReplace(rep)
+  }
+
+  console.log('✅ Successfully seeded all initial documents to Sanity production dataset!')
+}
+
+seed().catch((err) => {
+  console.error('Error seeding data:', err)
+  process.exit(1)
+})
