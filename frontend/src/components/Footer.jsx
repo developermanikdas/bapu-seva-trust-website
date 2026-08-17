@@ -14,7 +14,8 @@ const footerLinks = {
   ],
   resources: [
     { label: "News & Blog", href: "/news" },
-    { label: "Reports & Transparency", href: "/reports" },
+    { label: "Live Financial Transparency", href: "/financial-transparency" },
+    { label: "Reports & Disclosures", href: "/reports" },
     { label: "Contact Us", href: "/contact" },
   ],
 };

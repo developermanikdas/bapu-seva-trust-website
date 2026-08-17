@@ -8,7 +8,9 @@ export const metadata = {
   title: "Bapu Seva Trust | Building A Progressive & Uplifted Society",
   description: "Empowering women, nurturing children, and transforming futures across Bihar, Navi Mumbai & Delhi.",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
   },
 };
 

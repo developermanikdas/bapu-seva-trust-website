@@ -54,6 +54,20 @@ const faqs = [
   },
 ];
 
+const loadRazorpayScript = () => {
+  return new Promise((resolve) => {
+    if (typeof window !== "undefined" && window.Razorpay) {
+      resolve(true);
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
+
 export default function DonatePage() {
   const [citizenship, setCitizenship] = useState("Indian");
   const [frequency, setFrequency] = useState("One-Time");
@@ -64,24 +78,189 @@ export default function DonatePage() {
   const [donorEmail, setDonorEmail] = useState("");
   const [donorPan, setDonorPan] = useState("");
   const [openFaq, setOpenFaq] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(null);
+  const [showUpiQrModal, setShowUpiQrModal] = useState(false);
+  const [serverQrCode, setServerQrCode] = useState(null);
+
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
   const handleAmountSelect = (val) => {
     setAmount(val);
-    setCustomAmount("");
+    setCustomAmount(String(val));
   };
 
   const handleCustomAmountChange = (e) => {
-    setCustomAmount(e.target.value);
-    setAmount(Number(e.target.value) || 0);
+    const val = e.target.value;
+    setCustomAmount(val);
+    setAmount(Number(val) || 0);
   };
 
-  const handleDonateSubmit = (e) => {
+  const toggleUpiQrModal = async () => {
+    const nextState = !showUpiQrModal;
+    setShowUpiQrModal(nextState);
+
+    if (nextState) {
+      try {
+        const res = await fetch(`${BACKEND_URL}/api/payment/create-qr`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount, cause }),
+        });
+        const qrData = await res.json();
+        if (qrData.qrCodeUrl) {
+          setServerQrCode(qrData.qrCodeUrl);
+        }
+      } catch (e) {
+        console.error("Error fetching server QR code:", e);
+      }
+    }
+  };
+
+  const handleDonateSubmit = async (e) => {
     e.preventDefault();
-    if (!donorEmail) {
-      alert("Please enter your email address to receive your 80G receipt.");
+    if (!amount || amount <= 0) {
+      alert("Please enter or select a valid donation amount.");
       return;
     }
-    alert(`Thank you ${donorName || 'Generous Donor'}! Initiating payment for ₹${amount} (${frequency}) towards ${cause}. In production, this connects to Razorpay / PayTM Gateway.`);
+    if (!donorName || !donorEmail) {
+      alert("Please fill in your name and email address for your 80G receipt.");
+      return;
+    }
+
+    setIsProcessing(true);
+
+    try {
+      const isSDKLoaded = await loadRazorpayScript();
+      if (!isSDKLoaded) {
+        alert("Failed to load Razorpay SDK. Please check your internet connection.");
+        setIsProcessing(false);
+        return;
+      }
+
+      const isMonthly = frequency === "Monthly";
+      const endpoint = isMonthly
+        ? `${BACKEND_URL}/api/payment/create-subscription`
+        : `${BACKEND_URL}/api/payment/create-order`;
+
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount,
+          currency: "INR",
+          cause,
+          donorName,
+          donorEmail,
+          donorPan,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || data.error) {
+        throw new Error(data.error || "Failed to initialize payment request.");
+      }
+
+      // Configured Razorpay Modal Options with explicit UPI / QR Code blocks and Subscription support
+      const options = {
+        key: data.key,
+        name: "Bapu Seva Trust",
+        description: isMonthly ? `Monthly Subscription: ${cause}` : `One-Time Donation: ${cause}`,
+        prefill: {
+          name: donorName,
+          email: donorEmail,
+        },
+        theme: {
+          color: "#166534",
+        },
+        config: {
+          display: {
+            blocks: {
+              utib: {
+                name: "Pay via UPI & QR Code",
+                instruments: [
+                  { method: "upi" },
+                  { method: "card" },
+                  { method: "netbanking" },
+                  { method: "wallet" },
+                ],
+              },
+            },
+            sequence: ["block.utib"],
+            preferences: {
+              show_default_blocks: true,
+            },
+          },
+        },
+        handler: async function (response) {
+          try {
+            const verifyEndpoint = isMonthly
+              ? `${BACKEND_URL}/api/payment/verify-subscription`
+              : `${BACKEND_URL}/api/payment/verify-signature`;
+
+            const verifyRes = await fetch(verifyEndpoint, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(
+                isMonthly
+                  ? {
+                      razorpay_payment_id: response.razorpay_payment_id,
+                      razorpay_subscription_id: response.razorpay_subscription_id,
+                      razorpay_signature: response.razorpay_signature,
+                    }
+                  : {
+                      razorpay_order_id: response.razorpay_order_id,
+                      razorpay_payment_id: response.razorpay_payment_id,
+                      razorpay_signature: response.razorpay_signature,
+                    }
+              ),
+            });
+
+            const verifyData = await verifyRes.json();
+
+            if (verifyData.success) {
+              setPaymentSuccess({
+                paymentId: response.razorpay_payment_id,
+                orderId: response.razorpay_order_id || response.razorpay_subscription_id,
+                amount,
+                donorName,
+                donorEmail,
+                cause,
+                type: isMonthly ? "Monthly Subscription" : "One-Time Donation",
+              });
+            } else {
+              alert("Payment verification failed. Please contact support.");
+            }
+          } catch (err) {
+            console.error("Verification error:", err);
+            alert("Error verifying payment signature.");
+          } finally {
+            setIsProcessing(false);
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            setIsProcessing(false);
+          },
+        },
+      };
+
+      if (isMonthly) {
+        options.subscription_id = data.subscriptionId;
+      } else {
+        options.amount = data.amount;
+        options.currency = data.currency;
+        options.order_id = data.orderId;
+      }
+
+      const razorpayInstance = new window.Razorpay(options);
+      razorpayInstance.open();
+    } catch (error) {
+      console.error("Payment initiation error:", error);
+      alert(error.message || "Failed to initiate Razorpay payment.");
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -284,17 +463,62 @@ export default function DonatePage() {
                 {/* Submit Action Button */}
                 <button
                   type="submit"
-                  className="w-full bg-primary text-primary-foreground font-extrabold py-3.5 rounded-xl text-sm hover:opacity-90 transition-all shadow-lg hover:scale-[1.01] flex items-center justify-center gap-2"
+                  disabled={isProcessing}
+                  className="w-full bg-primary text-primary-foreground font-extrabold py-3.5 rounded-xl text-sm hover:opacity-90 transition-all shadow-lg hover:scale-[1.01] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Lock className="w-4 h-4" /> Proceed To Donate ₹{amount ? amount.toLocaleString() : 0} →
+                  {isProcessing ? (
+                    <>Connecting to Razorpay...</>
+                  ) : (
+                    <>
+                      <Lock className="w-4 h-4" /> Proceed To Donate ₹{amount ? amount.toLocaleString() : 0} →
+                    </>
+                  )}
                 </button>
               </form>
 
-              {/* Direct Banking & UPI Info Card (Bharat BillPay / NetBanking Style) */}
+              {/* Direct Banking & Dynamic UPI QR Code */}
               <div className="pt-4 border-t border-border/80 space-y-3">
-                <p className="text-xs font-bold text-foreground text-center uppercase tracking-wider">
-                  Donate Directly via UPI or Bank Transfer
-                </p>
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-bold text-foreground uppercase tracking-wider">
+                    Instant UPI & QR Code
+                  </p>
+                  <button
+                    type="button"
+                    onClick={toggleUpiQrModal}
+                    className="text-xs text-primary font-extrabold hover:underline flex items-center gap-1.5 bg-primary/10 px-3 py-1 rounded-lg border border-primary/20"
+                  >
+                    <QrCode className="w-4 h-4" /> {showUpiQrModal ? "Hide QR" : "Show Instant UPI QR"}
+                  </button>
+                </div>
+
+                {/* Dynamic UPI QR Code Display Card */}
+                {showUpiQrModal && (
+                  <div className="bg-muted p-4 rounded-2xl border-2 border-primary/30 flex flex-col items-center text-center space-y-3 animate-in fade-in zoom-in duration-200">
+                    <p className="text-xs font-bold text-foreground">
+                      Scan with Google Pay, PhonePe, Paytm or BHIM
+                    </p>
+                    <div className="bg-white p-3 rounded-2xl shadow-lg border border-border">
+                      <img
+                        src={
+                          serverQrCode ||
+                          `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(
+                            `upi://pay?pa=bapuseva@upi&pn=Bapu%20Seva%20Trust&am=${amount || 2500}&cu=INR&tn=Donation%20to%20Bapu%20Seva%20Trust`
+                          )}`
+                        }
+                        alt="Bapu Seva Trust Dynamic UPI QR Code"
+                        className="w-44 h-44 object-contain"
+                      />
+                    </div>
+                    <div className="text-[11px] text-muted-foreground space-y-1">
+                      <p>
+                        UPI ID: <strong className="text-foreground">bapuseva@upi</strong>
+                      </p>
+                      <p>
+                        Amount: <strong className="text-primary font-extrabold text-xs">₹{amount ? amount.toLocaleString() : 0}</strong>
+                      </p>
+                    </div>
+                  </div>
+                )}
                 
                 <div className="bg-muted/60 p-3 rounded-2xl border border-border/60 space-y-2 text-xs">
                   <div className="flex items-center justify-between">
@@ -497,6 +721,53 @@ export default function DonatePage() {
           </div>
         </div>
       </section>
+
+      {/* Payment Success Receipt Modal */}
+      {paymentSuccess && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-card text-card-foreground border border-border rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl space-y-5 animate-in fade-in zoom-in duration-300">
+            <div className="flex flex-col items-center text-center space-y-2">
+              <div className="w-16 h-16 bg-emerald-500/10 text-emerald-600 rounded-full flex items-center justify-center mb-2 border border-emerald-500/20">
+                <CheckCircle className="w-10 h-10" />
+              </div>
+              <h3 className="font-display text-2xl font-bold">Donation Successful!</h3>
+              <p className="text-xs text-muted-foreground">
+                Thank you, <strong className="text-foreground">{paymentSuccess.donorName}</strong>. Your payment has been verified.
+              </p>
+            </div>
+
+            <div className="bg-muted p-4 rounded-2xl space-y-2 text-xs border border-border/60">
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">Amount Paid:</span>
+                <span className="font-extrabold text-primary text-sm">₹{paymentSuccess.amount.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">Payment ID:</span>
+                <span className="font-mono text-[11px] font-semibold">{paymentSuccess.paymentId}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">Order ID:</span>
+                <span className="font-mono text-[11px] font-semibold">{paymentSuccess.orderId}</span>
+              </div>
+              <div className="flex justify-between items-center pt-2 border-t border-border/40">
+                <span className="text-muted-foreground">Designated Cause:</span>
+                <span className="font-semibold text-right max-w-[200px] truncate">{paymentSuccess.cause}</span>
+              </div>
+            </div>
+
+            <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3 text-[11px] text-emerald-700 dark:text-emerald-300 leading-relaxed text-center">
+              An official 80G tax exemption receipt has been processed for <strong>{paymentSuccess.donorEmail}</strong>.
+            </div>
+
+            <button
+              onClick={() => setPaymentSuccess(null)}
+              className="w-full bg-primary text-primary-foreground font-bold py-3 rounded-xl hover:opacity-90 transition-all text-sm"
+            >
+              Close Receipt
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
