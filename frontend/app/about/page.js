@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CheckCircle, Users, Award, MapPin, ArrowRight, Mail, Linkedin, ChevronDown, ChevronUp } from "lucide-react";
 import PageHero from "@/components/PageHero.jsx";
+import { fetchAboutPageData, fetchTeamMembersData } from "@/sanity/queries";
 import heroImage from "@/assets/hero-image.jpg";
 import programsHealth from "@/assets/programs-health.jpg";
 import programsEmpowerment from "@/assets/programs-empowerment.jpg";
@@ -93,16 +94,32 @@ const milestones = [
 ];
 
 export default function AboutPage() {
+  const [sanityAbout, setSanityAbout] = useState(null);
+  const [sanityTeam, setSanityTeam] = useState(null);
   const [showAllTeam, setShowAllTeam] = useState(false);
 
-  const visibleTeam = showAllTeam ? teamMembers : teamMembers.slice(0, 3);
+  useEffect(() => {
+    fetchAboutPageData().then((res) => {
+      if (res) setSanityAbout(res);
+    });
+    fetchTeamMembersData().then((res) => {
+      if (res) setSanityTeam(res);
+    });
+  }, []);
+
+  const activeTeamList = sanityTeam && sanityTeam.length > 0 ? sanityTeam : teamMembers;
+  const visibleTeam = showAllTeam ? activeTeamList : activeTeamList.slice(0, 3);
+
+  const heroSubtitle = sanityAbout?.heroSubtitle || "Rooted in Dignity & Grassroots Action";
+  const heroTitle = sanityAbout?.heroTitle || "About Bapu Seva Trust";
+  const heroDesc = sanityAbout?.heroDescription || "Fostering self-reliance, inclusive growth, and equal opportunity for marginalized communities across Bihar, Navi Mumbai, and Delhi.";
 
   return (
     <>
       <PageHero
-        subtitle="Who We Are"
-        title="About Bapu Seva Trust"
-        description="Building A Progressive & Uplifted Society — Empowering women, nurturing children, and transforming futures across Bihar, Navi Mumbai & Delhi."
+        subtitle={heroSubtitle}
+        title={heroTitle}
+        description={heroDesc}
       />
 
       {/* Main Story & Identity */}

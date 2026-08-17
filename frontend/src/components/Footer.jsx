@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Heart } from "lucide-react";
+import ThemePlayroom from "./ThemePlayroom.jsx";
 
 const footerLinks = {
   quickLinks: [
@@ -73,6 +74,10 @@ const Footer = () => {
             </form>
           </div>
         </div>
+
+        {/* Temporary Theme Color Playroom */}
+        <ThemePlayroom />
+
         <div className="border-t border-background/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-background/50">
           <p>© 2025 Bapu Seva Trust. All rights reserved.</p>
           <p className="flex items-center gap-1">

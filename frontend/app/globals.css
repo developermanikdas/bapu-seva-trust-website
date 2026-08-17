@@ -6,50 +6,50 @@
 
 @layer base {
   :root {
-    /* 4-Shade Blue Palette: #0A2647 | #144272 | #205295 | #2C74B3 */
-    --color-navy-dark: 212 75% 16%;     /* #0A2647 */
-    --color-blue-primary: 211 70% 26%;  /* #144272 */
-    --color-blue-royal: 214 64% 35%;    /* #205295 */
-    --color-blue-accent: 208 60% 44%;   /* #2C74B3 */
+    /* User Requested 4-Shade Blue Palette: #E3F2FD | #90CAF9 | #2196F3 | #0D47A1 */
+    --color-navy-dark: 217 85% 34%;     /* #0D47A1 */
+    --color-blue-primary: 207 90% 54%;  /* #2196F3 */
+    --color-blue-royal: 207 89% 77%;    /* #90CAF9 */
+    --color-blue-accent: 204 89% 94%;   /* #E3F2FD */
 
-    --background: 210 25% 97%;
-    --foreground: 212 75% 12%;
+    --background: 204 89% 97%;
+    --foreground: 217 85% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 212 75% 12%;
+    --card-foreground: 217 85% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 212 75% 12%;
+    --popover-foreground: 217 85% 15%;
 
-    --primary: 211 70% 26%;             /* #144272 */
+    --primary: 207 90% 54%;             /* #2196F3 */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 214 64% 35%;           /* #205295 */
+    --secondary: 217 85% 34%;           /* #0D47A1 */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 20% 92%;
+    --muted: 204 89% 94%;               /* #E3F2FD */
     --muted-foreground: 215 16% 47%;
 
-    --accent: 208 60% 44%;              /* #2C74B3 */
-    --accent-foreground: 0 0% 100%;
+    --accent: 207 89% 77%;              /* #90CAF9 */
+    --accent-foreground: 217 85% 15%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 208 60% 44%;
+    --ring: 207 90% 54%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 212 75% 16%;   /* #0A2647 */
+    --sidebar-background: 217 85% 34%;   /* #0D47A1 */
     --sidebar-foreground: 210 25% 97%;
-    --sidebar-primary: 208 60% 44%;      /* #2C74B3 */
+    --sidebar-primary: 207 90% 54%;      /* #2196F3 */
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 211 70% 26%;       /* #144272 */
+    --sidebar-accent: 207 89% 77%;       /* #90CAF9 */
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 211 70% 22%;
-    --sidebar-ring: 208 60% 44%;
+    --sidebar-border: 217 85% 25%;
+    --sidebar-ring: 207 90% 54%;
 
     --font-display: 'DM Serif Display', serif;
     --font-body: 'DM Sans', sans-serif;
