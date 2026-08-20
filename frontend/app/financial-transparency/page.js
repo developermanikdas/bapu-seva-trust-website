@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import PageHero from "@/components/PageHero.jsx";
+import { toast } from "sonner";
 import {
   TrendingUp,
   TrendingDown,
@@ -97,13 +98,13 @@ export default function FinancialTransparencyPage() {
   const handleCashSubmit = async (e) => {
     e.preventDefault();
     if (!cashDonorName || !cashAmount || Number(cashAmount) <= 0) {
-      alert("Please enter a valid donor name and amount.");
+      toast.warning("Incomplete Form", { description: "Please enter a valid donor name and amount." });
       return;
     }
 
     const token = localStorage.getItem("bst_admin_token");
     if (!token) {
-      alert("Authentication token missing. Please log in to the Staff Portal.");
+      toast.error("Auth Required", { description: "Authentication token missing. Please log in to the Staff Portal." });
       window.location.href = "/portal-access";
       return;
     }
@@ -130,7 +131,7 @@ export default function FinancialTransparencyPage() {
       const json = await res.json();
 
       if (res.ok && json.success) {
-        alert("Cash donation successfully recorded into public ledger!");
+        toast.success("Ledger Updated", { description: "Cash donation successfully recorded into public ledger!" });
         setShowCashModal(false);
         setCashDonorName("");
         setCashAmount("");
@@ -139,11 +140,11 @@ export default function FinancialTransparencyPage() {
         setCashNotes("");
         fetchFinancialData();
       } else {
-        alert(json.error || "Failed to record cash donation.");
+        toast.error("Submission Error", { description: json.error || "Failed to record cash donation." });
       }
     } catch (err) {
       console.error("Cash record error:", err);
-      alert("Network error while recording cash donation.");
+      toast.error("Network Error", { description: "Network error while recording cash donation." });
     } finally {
       setIsSubmittingCash(false);
     }

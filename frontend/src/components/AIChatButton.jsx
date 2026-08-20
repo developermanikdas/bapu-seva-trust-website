@@ -31,6 +31,10 @@ const KNOWLEDGE_BASE = [
     keywords: ["women", "empowerment", "skill"],
     reply: "We offer vocational skill workshops, financial literacy programs, and self-reliance guidance for women in underserved communities across Bihar, Navi Mumbai & Delhi.",
   },
+  {
+    keywords: ["bank", "account", "ifsc", "upi", "number", "email", "contact"],
+    reply: "Official Trust Bank Details: A/C Name: BAPU SEVA TRUST | A/C No: 6347000100046658 | IFSC: PUNJB0634700 (Punjab National Bank) | UPI: 7870726323 | Official Email: info@bapusevatrust.org | Phone: +91 7870726323.",
+  },
 ];
 
 export default function AIChatButton() {
@@ -38,7 +42,7 @@ export default function AIChatButton() {
   const [messages, setMessages] = useState([
     {
       sender: "bot",
-      text: "Namaste! 🙏 I am the Bapu Seva Trust AI Assistant. How can I help you today regarding our programs in Bihar, Navi Mumbai & Delhi?",
+      text: "Namaste! 🙏 I am the Bapu Seva Trust AI Assistant. How can I help you today regarding our programs, donations, or bank account details?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -70,7 +74,7 @@ export default function AIChatButton() {
 
       const botReply = match
         ? match.reply
-        : "Thank you for asking! Bapu Seva Trust is dedicated to building a progressive & uplifted society. For detailed inquiries, please visit our Contact page or email us at info@bapuseva.org.";
+        : "Thank you for asking! Bapu Seva Trust is dedicated to building a progressive & uplifted society. For detailed inquiries, please visit our Contact page or email us at info@bapusevatrust.org (Phone: +91 7870726323).";
 
       setMessages((prev) => [...prev, { sender: "bot", text: botReply }]);
       setIsTyping(false);

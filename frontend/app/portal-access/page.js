@@ -18,7 +18,7 @@ import {
 
 export default function PortalAccessPage() {
   const [step, setStep] = useState(1); // Step 1: Credentials, Step 2: 2FA PIN, Step 3: Admin Console
-  const [username, setUsername] = useState("admin@bapuseva.org");
+  const [username, setUsername] = useState("info@bapusevatrust.org");
   const [password, setPassword] = useState("Password@123");
   const [twoFactorPin, setTwoFactorPin] = useState("");
   const [tempSessionId, setTempSessionId] = useState(null);
@@ -240,7 +240,7 @@ export default function PortalAccessPage() {
 
               <div className="bg-primary/10 border border-primary/20 rounded-xl p-3 text-[11px] text-muted-foreground flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-primary shrink-0" />
-                <span>Default Credentials pre-filled for demonstration: <strong>admin@bapuseva.org</strong> / <strong>Password@123</strong></span>
+                <span>Default Credentials pre-filled for demonstration: <strong>info@bapusevatrust.org</strong> / <strong>Password@123</strong></span>
               </div>
 
               <button

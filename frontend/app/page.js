@@ -225,7 +225,7 @@ export default function HomePage() {
             A Trust Built on Compassion & Action
           </h2>
           <p className="text-muted-foreground text-lg max-w-3xl mx-auto leading-relaxed mb-8">
-            Bapu Seva Trust was established in 2021 with a dedicated vision to uplift underserved communities across **Bihar**, **Navi Mumbai**, and **Delhi**. We believe in grassroots action, complete transparency, and holistic empowerment.
+            Bapu Seva Trust was established in 2021 with a dedicated vision to uplift underserved communities across Bihar, Navi Mumbai, and Delhi. We believe in grassroots action, complete transparency, and holistic empowerment.
           </p>
           <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto mb-10 text-left">
             <div className="bg-card p-6 rounded-2xl border border-border/60 shadow-sm">

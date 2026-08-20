@@ -1,34 +1,47 @@
 'use client';
 
 import { useState } from "react";
-import { MapPin, Phone, Mail, Clock, Facebook, Twitter, Instagram, Linkedin, Building2, User, ChevronDown } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Facebook, Youtube, Instagram, Linkedin, Building2, User, ChevronDown, MessageCircle } from "lucide-react";
+import { toast } from "sonner";
 import PageHero from "@/components/PageHero.jsx";
 
 const mainOffices = [
   {
-    city: "Headquarters — Delhi",
+    city: "Registered Head Office — Bihar",
+    address: "Madanpur, Aurangabad, Bihar - 824208",
+    phone: "+91 7870726323",
+    whatsapp: "7870726323 / 9004531826",
+    email: "info@bapusevatrust.org",
+    hours: "Mon - Sat, 9:00 AM - 6:30 PM",
+  },
+  {
+    city: "Headquarters & Policy — Delhi",
     address: "Bapu Seva Trust, Connaught Place, New Delhi - 110001",
-    phone: "+91 98100 54321",
-    email: "delhi@bapuseva.org",
+    phone: "+91 7870726323",
+    whatsapp: "7870726323",
+    email: "info@bapusevatrust.org",
     hours: "Mon - Sat, 9:00 AM - 6:00 PM",
   },
   {
-    city: "Regional Office — Bihar",
-    address: "Bapu Seva Trust, Boring Road, Patna, Bihar - 800001",
-    phone: "+91 98350 12345",
-    email: "bihar@bapuseva.org",
-    hours: "Mon - Sat, 9:30 AM - 6:00 PM",
-  },
-  {
-    city: "Regional Office — Navi Mumbai",
+    city: "Regional Outreach — Navi Mumbai",
     address: "Bapu Seva Trust, Sector 15, Vashi, Navi Mumbai - 400703",
-    phone: "+91 98200 67890",
-    email: "mumbai@bapuseva.org",
+    phone: "+91 9004531826",
+    whatsapp: "9004531826",
+    email: "info@bapusevatrust.org",
     hours: "Mon - Sat, 9:30 AM - 6:00 PM",
   },
 ];
 
 const stateOfficesData = {
+  "BIHAR": {
+    stateName: "BIHAR",
+    orgName: "Bapu Seva Trust — Registered Head Office",
+    address: "Madanpur, Aurangabad, Bihar - 824208",
+    landmark: "Main Road Madanpur",
+    person: "Ankit Chaurasia (Founder)",
+    phone: "7870726323",
+    email: "info@bapusevatrust.org",
+  },
   "WEST BENGAL": {
     stateName: "WEST BENGAL",
     orgName: "Bapu Seva Trust — West Bengal Chapter",
@@ -36,16 +49,7 @@ const stateOfficesData = {
     landmark: "Near Quality More (Annapurna Sweets)",
     person: "Manoj Thakur",
     phone: "9775483940",
-    email: "westbengal@bapuseva.org",
-  },
-  "BIHAR": {
-    stateName: "BIHAR",
-    orgName: "Bapu Seva Trust — Bihar Chapter",
-    address: "Boring Road, Near Main Chowk, Patna, Bihar - 800001",
-    landmark: "Near Central Library",
-    person: "Rajesh Sharma",
-    phone: "9835012345",
-    email: "bihar@bapuseva.org",
+    email: "info@bapusevatrust.org",
   },
   "MUMBAI": {
     stateName: "MUMBAI",
@@ -53,8 +57,8 @@ const stateOfficesData = {
     address: "Sector 15, Near Railway Station, Vashi, Navi Mumbai - 400703",
     landmark: "Near Vashi Plaza",
     person: "Ananya Verma",
-    phone: "9820067890",
-    email: "mumbai@bapuseva.org",
+    phone: "9004531826",
+    email: "info@bapusevatrust.org",
   },
   "DELHI": {
     stateName: "DELHI",
@@ -62,21 +66,22 @@ const stateOfficesData = {
     address: "Connaught Place, Block B, Inner Circle, New Delhi - 110001",
     landmark: "Near Rajiv Chowk Metro Gate 3",
     person: "Dr. Vikram Patel",
-    phone: "9810054321",
-    email: "delhi@bapuseva.org",
+    phone: "7870726323",
+    email: "info@bapusevatrust.org",
   },
 };
 
 const socialLinks = [
-  { icon: Facebook, label: "Facebook", href: "#" },
-  { icon: Twitter, label: "Twitter", href: "#" },
-  { icon: Instagram, label: "Instagram", href: "#" },
-  { icon: Linkedin, label: "LinkedIn", href: "#" },
+  { icon: Facebook, label: "Facebook", href: "https://www.facebook.com/people/Bapu-Seva-Trust/pfbid027TRqFGRj75sNpSnerJZWjTihgf2WbVaXz6kqZSJkTE1J9oWnaXjf5MUKSdAjxLokl/" },
+  { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/bapu_seva_trust" },
+  { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/bapu-seva-trust-80640040b" },
+  { icon: Youtube, label: "YouTube", href: "https://www.youtube.com/@bapusevatrust" },
+  { icon: MessageCircle, label: "WhatsApp Channel", href: "https://www.whatsapp.com/channel/0029VaA3U1LCBtxFrwX5UJ1H" },
 ];
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
-  const [selectedState, setSelectedState] = useState("WEST BENGAL");
+  const [selectedState, setSelectedState] = useState("BIHAR");
 
   const currentStateOffice = stateOfficesData[selectedState];
 
@@ -116,9 +121,15 @@ export default function ContactPage() {
                       <Phone className="w-4 h-4 text-primary shrink-0" />
                       <span>{office.phone}</span>
                     </p>
+                    {office.whatsapp && (
+                      <p className="flex items-center gap-2.5">
+                        <MessageCircle className="w-4 h-4 text-emerald-500 shrink-0" />
+                        <span>WhatsApp: {office.whatsapp}</span>
+                      </p>
+                    )}
                     <p className="flex items-center gap-2.5">
                       <Mail className="w-4 h-4 text-primary shrink-0" />
-                      <span>{office.email}</span>
+                      <span className="font-semibold">{office.email}</span>
                     </p>
                     <p className="flex items-center gap-2.5">
                       <Clock className="w-4 h-4 text-primary shrink-0" />
@@ -132,116 +143,100 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* STATE OFFICES Section (State-Wise Contact Selection) */}
-      <section className="section-padding" style={{ background: "var(--gradient-section)" }}>
-        <div className="container-narrow max-w-4xl">
-          <div className="bg-card rounded-3xl p-8 sm:p-12 border border-border/80 shadow-xl space-y-8">
-            <div>
-              <h2 className="font-display text-2xl sm:text-3xl text-foreground font-bold tracking-tight uppercase border-b border-border/80 pb-4 mb-6">
-                STATE OFFICES
-              </h2>
-
-              {/* Location Select Dropdown */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
-                <label className="font-medium text-foreground text-sm sm:text-base">
-                  Location
-                </label>
-                <div className="relative w-full sm:w-72">
-                  <select
-                    value={selectedState}
-                    onChange={(e) => setSelectedState(e.target.value)}
-                    className="w-full bg-background border border-border text-foreground font-semibold text-sm rounded-xl px-4 py-3 appearance-none focus:outline-none focus:ring-2 focus:ring-primary shadow-sm uppercase"
-                  >
-                    {Object.keys(stateOfficesData).map((st) => (
-                      <option key={st} value={st}>
-                        {st}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="w-4 h-4 text-muted-foreground absolute right-4 top-4 pointer-events-none" />
-                </div>
-              </div>
-            </div>
-
-            {/* Selected State Office Card */}
-            {currentStateOffice && (
-              <div className="bg-muted/40 rounded-2xl p-6 sm:p-8 border border-border/60 space-y-4 animate-fade-in">
-                <h3 className="font-display text-xl sm:text-2xl text-foreground font-bold uppercase tracking-wide">
-                  {currentStateOffice.stateName}
-                </h3>
-
-                <div className="space-y-3 text-sm leading-relaxed text-foreground">
-                  <div>
-                    <span className="font-bold text-foreground block mb-0.5">Address:</span>
-                    <p className="text-muted-foreground font-normal">{currentStateOffice.orgName}</p>
-                    <p className="text-muted-foreground font-normal">{currentStateOffice.address}</p>
-                    {currentStateOffice.landmark && (
-                      <p className="text-muted-foreground font-normal italic text-xs mt-0.5">
-                        Near — {currentStateOffice.landmark}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="pt-2">
-                    <span className="font-bold text-foreground">State responsible Person: </span>
-                    <span className="text-muted-foreground font-medium">{currentStateOffice.person}</span>
-                  </div>
-
-                  <div>
-                    <span className="font-bold text-foreground">Phone Number: </span>
-                    <a href={`tel:${currentStateOffice.phone}`} className="text-primary font-semibold hover:underline">
-                      {currentStateOffice.phone}
-                    </a>
-                  </div>
-
-                  <div>
-                    <span className="font-bold text-foreground">Email: </span>
-                    <a href={`mailto:${currentStateOffice.email}`} className="text-primary font-semibold hover:underline">
-                      {currentStateOffice.email}
-                    </a>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* General Contact Form Section */}
+      {/* General Contact Form Section with Embedded Minimal State Office Selector */}
       <section className="section-padding">
         <div className="container-narrow">
-          <div className="grid md:grid-cols-2 gap-12">
-            {/* Contact Details & Social */}
-            <div>
-              <h2 className="font-display text-2xl text-foreground mb-6">Send Us a Direct Message</h2>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-8">
-                Whether you have a general query, want to partner with us, or are interested in volunteering in West Bengal, Bihar, Navi Mumbai, or Delhi — reach out using the form.
-              </p>
+          <div className="grid md:grid-cols-2 gap-10 lg:gap-12 items-start">
+            
+            {/* Left Column: Direct Message & Compact State Directory */}
+            <div className="space-y-6">
+              <div>
+                <span className="text-primary font-bold text-xs uppercase tracking-widest block mb-2">Get In Touch</span>
+                <h2 className="font-display text-2xl sm:text-3xl text-foreground font-bold mb-3">Send Us a Direct Message</h2>
+                <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">
+                  Whether you have a general query, want to partner with us, or are interested in volunteering in Bihar, West Bengal, Navi Mumbai, or Delhi — reach out directly using the form or connect with our state coordinators below.
+                </p>
+              </div>
 
-              <h3 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-wider">Follow Our Journey</h3>
-              <div className="flex gap-3">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    aria-label={social.label}
-                    className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-colors shadow-sm"
-                  >
-                    <social.icon className="w-5 h-5" />
-                  </a>
-                ))}
+              {/* Compact & Minimal State Office Directory with Dropdown */}
+              <div className="bg-card rounded-2xl p-4 sm:p-5 border border-border/80 shadow-sm space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2 border-b border-border/60">
+                  <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-primary" />
+                    State Office Directory
+                  </span>
+
+                  {/* Modern Compact Dropdown */}
+                  <div className="relative w-full sm:w-52">
+                    <select
+                      value={selectedState}
+                      onChange={(e) => setSelectedState(e.target.value)}
+                      className="w-full bg-muted text-foreground border border-border/70 font-bold text-xs rounded-xl px-3 py-2 pr-8 appearance-none focus:outline-none focus:ring-2 focus:ring-primary shadow-xs cursor-pointer"
+                    >
+                      <option value="BIHAR">Bihar (Head Office)</option>
+                      <option value="WEST BENGAL">West Bengal (Kolkata)</option>
+                      <option value="MUMBAI">Navi Mumbai (Vashi)</option>
+                      <option value="DELHI">Delhi (Central Office)</option>
+                    </select>
+                    <ChevronDown className="w-3.5 h-3.5 text-muted-foreground absolute right-2.5 top-3 pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Minimal State Details */}
+                {currentStateOffice && (
+                  <div className="text-xs space-y-2 pt-1 animate-in fade-in duration-200">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-foreground text-xs">{currentStateOffice.orgName}</span>
+                      <span className="text-[11px] text-muted-foreground font-medium">Lead: <strong>{currentStateOffice.person}</strong></span>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground leading-relaxed">
+                      {currentStateOffice.address} {currentStateOffice.landmark && `(Near ${currentStateOffice.landmark})`}
+                    </p>
+                    <div className="flex items-center gap-4 text-[11px] pt-1 text-muted-foreground flex-wrap">
+                      <a href={`tel:${currentStateOffice.phone}`} className="text-primary font-semibold hover:underline flex items-center gap-1">
+                        <Phone className="w-3 h-3" /> {currentStateOffice.phone}
+                      </a>
+                      <a href={`mailto:${currentStateOffice.email}`} className="text-primary font-semibold hover:underline flex items-center gap-1">
+                        <Mail className="w-3 h-3" /> {currentStateOffice.email}
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Social Links */}
+              <div>
+                <h3 className="font-semibold text-foreground mb-3 text-xs uppercase tracking-wider">Follow Our Journey</h3>
+                <div className="flex gap-2.5 flex-wrap">
+                  {socialLinks.map((social) => (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={social.label}
+                      className="w-9 h-9 rounded-xl bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-colors shadow-xs"
+                    >
+                      <social.icon className="w-4 h-4" />
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Contact Form */}
+            {/* Right Column: Contact Form */}
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 setSubmitted(true);
+                toast.success("Message Sent Successfully!", {
+                  description: "Thank you for reaching out. Our representative will contact you within 24 hours.",
+                  duration: 5000,
+                });
               }}
-              className="bg-card rounded-2xl p-8 space-y-5 border border-border/80 shadow-md"
+              className="bg-card rounded-2xl p-6 sm:p-8 space-y-4 border border-border/80 shadow-md"
             >
-              <h3 className="font-display text-xl text-foreground mb-2">Message Form</h3>
+              <h3 className="font-display text-xl text-foreground mb-1">Message Form</h3>
               {submitted ? (
                 <div className="text-center py-12">
                   <p className="text-primary text-4xl mb-3">✓</p>
@@ -283,8 +278,8 @@ export default function ContactPage() {
                     defaultValue=""
                   >
                     <option value="" disabled>Select State / Subject</option>
-                    <option>West Bengal — General / Volunteer Inquiry</option>
                     <option>Bihar — General / Volunteer Inquiry</option>
+                    <option>West Bengal — General / Volunteer Inquiry</option>
                     <option>Mumbai / Navi Mumbai — General Inquiry</option>
                     <option>Delhi — General Inquiry</option>
                     <option>CSR / Donation Inquiry</option>

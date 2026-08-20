@@ -43,11 +43,11 @@ const corePillars = [
 
 const teamMembers = [
   {
-    name: "Rajesh Sharma",
+    name: "Ankit Chaurasia",
     role: "Founder & Managing Trustee",
     location: "Bihar & Delhi",
     image: typeof heroImage === 'string' ? heroImage : heroImage.src,
-    bio: "Passionate social worker with 10+ years of grassroots development experience in rural education and community health.",
+    bio: "Passionate social worker with a Master's in Sociology, dedicated to grassroots community empowerment, rural education, and health awareness.",
   },
   {
     name: "Ananya Verma",

@@ -5,13 +5,13 @@
 
 export const themeConfig = {
   colors: {
-    navyDark: '#0A2647',
-    bluePrimary: '#144272',
-    blueRoyal: '#205295',
-    blueHighlight: '#2C74B3',
-    backgroundLight: '#F4F7FA',
+    navyDark: '#172554',
+    bluePrimary: '#3B82F6',
+    blueRoyal: '#1E40AF',
+    blueHighlight: '#BFDBFE',
+    backgroundLight: '#EFF6FF',
     cardLight: '#FFFFFF',
-    textDark: '#0F172A',
+    textDark: '#0B1329',
     textMuted: '#475569',
     borderLight: '#E2E8F0',
   },
@@ -24,13 +24,13 @@ export const themeConfig = {
     containerNarrow: 'max-w-6xl mx-auto',
   },
   gradients: {
-    primary: 'linear-gradient(135deg, #144272 0%, #205295 50%, #2C74B3 100%)',
-    heroOverlay: 'linear-gradient(to bottom, rgba(10, 38, 71, 0.75), rgba(10, 38, 71, 0.90))',
-    cardHover: 'linear-gradient(180deg, #FFFFFF 0%, #F0F4F8 100%)',
+    primary: 'linear-gradient(135deg, #172554 0%, #1E40AF 50%, #3B82F6 100%)',
+    heroOverlay: 'linear-gradient(to bottom, rgba(23, 37, 84, 0.80), rgba(23, 37, 84, 0.94))',
+    cardHover: 'linear-gradient(180deg, #FFFFFF 0%, #EFF6FF 100%)',
   },
   shadows: {
-    brand: '0 10px 40px -12px rgba(32, 82, 149, 0.35)',
-    card: '0 4px 24px -4px rgba(10, 38, 71, 0.08)',
+    brand: '0 10px 40px -12px rgba(59, 130, 246, 0.35)',
+    card: '0 4px 24px -4px rgba(23, 37, 84, 0.08)',
   }
 };
 

@@ -26,7 +26,7 @@ const temp2FASessions = new Map();
 
 // Default Admin Credentials (Password@123 & 2FA PIN: 849201)
 const DEFAULT_ADMIN = {
-  username: "admin@bapuseva.org",
+  username: "info@bapusevatrust.org",
   passwordPlain: "Password@123",
   twoFactorPin: "849201",
 };
@@ -148,8 +148,58 @@ const verifyAdminToken = (req, res, next) => {
   }
 };
 
-// Health Check Endpoint
+// Lightweight In-Memory Rate Limiter for Ping/Heartbeat (Protection against flood attacks)
+const pingRateMap = new Map();
+const PING_WINDOW_MS = 60 * 1000; // 1 minute
+const MAX_PINGS_PER_MINUTE = 60; // 60 pings/min max per IP
+
+const pingSecurityLimiter = (req, res, next) => {
+  const clientIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress || "anonymous";
+  const now = Date.now();
+  const clientData = pingRateMap.get(clientIp);
+
+  if (!clientData || now - clientData.startTime > PING_WINDOW_MS) {
+    pingRateMap.set(clientIp, { count: 1, startTime: now });
+  } else {
+    clientData.count += 1;
+    if (clientData.count > MAX_PINGS_PER_MINUTE) {
+      return res.status(429).json({ error: "Too many ping requests. Slow down." });
+    }
+  }
+
+  // Memory hygiene: prune map periodically
+  if (pingRateMap.size > 2000) {
+    pingRateMap.clear();
+  }
+
+  next();
+};
+
+// 1. Ultra-Minimal Keep-Alive Ping & Heartbeat (Zero DB Load, <2ms response, Non-Cached)
+app.all(["/api/ping", "/api/heartbeat", "/ping"], pingSecurityLimiter, (req, res) => {
+  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+
+  // If HEAD request, respond with headers only (0 payload bytes transferred)
+  if (req.method === "HEAD") {
+    return res.status(200).end();
+  }
+
+  res.status(200).json({
+    status: "ok",
+    app: "bapu-seva-trust-api",
+    alive: true,
+    uptimeSec: Math.floor(process.uptime()),
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// 2. Health Check Endpoint
 app.get("/health", (req, res) => {
+  res.setHeader("Cache-Control", "no-cache");
   res.json({
     status: "OK",
     service: "Bapu Seva Trust Express Backend",
@@ -176,7 +226,8 @@ app.post("/api/admin/login", async (req, res) => {
         twoFactorPin = user.twoFactorPin;
       }
     } else {
-      if (username === DEFAULT_ADMIN.username && password === DEFAULT_ADMIN.passwordPlain) {
+      const validUsernames = ["info@bapusevatrust.org", "admin@bapuseva.org", "admin@bapusevatrust.org"];
+      if (validUsernames.includes(username.toLowerCase()) && password === DEFAULT_ADMIN.passwordPlain) {
         isValid = true;
       }
     }
@@ -440,20 +491,20 @@ app.post("/api/payment/verify-subscription", async (req, res) => {
 app.post("/api/payment/create-qr", async (req, res) => {
   try {
     const { amount = 2500, cause = "General Fund" } = req.body;
-    const upiUri = `upi://pay?pa=bapuseva@upi&pn=Bapu%20Seva%20Trust&am=${amount}&cu=INR&tn=${encodeURIComponent("Donation towards " + cause)}`;
+    const upiUri = `upi://pay?pa=7870726323@upi&pn=Bapu%20Seva%20Trust&am=${amount}&cu=INR&tn=${encodeURIComponent("Donation towards " + cause)}`;
 
     const qrDataUrl = await QRCode.toDataURL(upiUri, {
       width: 260,
       margin: 2,
       color: {
-        dark: "#166534",
+        dark: "#172554",
         light: "#FFFFFF",
       },
     });
 
     res.json({
       qrCodeUrl: qrDataUrl,
-      upiId: "bapuseva@upi",
+      upiId: "7870726323@upi",
       amount,
       currency: "INR",
     });

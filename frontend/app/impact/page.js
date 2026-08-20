@@ -209,7 +209,7 @@ export default function ImpactPage() {
 
       {/* INSPIRED SECTION: "Our Footprint Across India" (High Contrast State Carousel Layout) */}
       <section
-        className="section-padding bg-[#0A2647] text-white overflow-hidden relative"
+        className="section-padding bg-secondary text-white overflow-hidden relative"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Heart, Shield, CheckCircle, Lock, ChevronDown, ChevronUp, MapPin, Sparkles, Building2, CreditCard, QrCode, ArrowRight, Play, Users, Award, BookOpen, Leaf } from "lucide-react";
+import { toast } from "sonner";
 import PageHero from "@/components/PageHero.jsx";
 import heroImage from "@/assets/hero-image.jpg";
 import programsHealth from "@/assets/programs-health.jpg";
@@ -50,7 +51,7 @@ const faqs = [
   },
   {
     q: "How do I contact support if I have donation or payment questions?",
-    a: "You can reach our donation helpline directly at +91 98100 54321 or email us at donate@bapuseva.org. We respond within 24 hours.",
+    a: "You can reach our donation helpline directly at +91 7870726323 or email us at info@bapusevatrust.org. We respond promptly within 24 hours.",
   },
 ];
 
@@ -120,11 +121,11 @@ export default function DonatePage() {
   const handleDonateSubmit = async (e) => {
     e.preventDefault();
     if (!amount || amount <= 0) {
-      alert("Please enter or select a valid donation amount.");
+      toast.warning("Missing Amount", { description: "Please enter or select a valid donation amount." });
       return;
     }
     if (!donorName || !donorEmail) {
-      alert("Please fill in your name and email address for your 80G receipt.");
+      toast.warning("Donor Details Required", { description: "Please fill in your name and email address for your 80G receipt." });
       return;
     }
 
@@ -133,7 +134,7 @@ export default function DonatePage() {
     try {
       const isSDKLoaded = await loadRazorpayScript();
       if (!isSDKLoaded) {
-        alert("Failed to load Razorpay SDK. Please check your internet connection.");
+        toast.error("SDK Error", { description: "Failed to load Razorpay SDK. Please check your internet connection." });
         setIsProcessing(false);
         return;
       }
@@ -172,7 +173,7 @@ export default function DonatePage() {
           email: donorEmail,
         },
         theme: {
-          color: "#166534",
+          color: "#3B82F6",
         },
         config: {
           display: {
@@ -220,6 +221,7 @@ export default function DonatePage() {
             const verifyData = await verifyRes.json();
 
             if (verifyData.success) {
+              toast.success("Payment Received!", { description: "Thank you for your generous contribution to Bapu Seva Trust." });
               setPaymentSuccess({
                 paymentId: response.razorpay_payment_id,
                 orderId: response.razorpay_order_id || response.razorpay_subscription_id,
@@ -230,11 +232,11 @@ export default function DonatePage() {
                 type: isMonthly ? "Monthly Subscription" : "One-Time Donation",
               });
             } else {
-              alert("Payment verification failed. Please contact support.");
+              toast.error("Verification Issue", { description: "Payment verification failed. Please contact support." });
             }
           } catch (err) {
             console.error("Verification error:", err);
-            alert("Error verifying payment signature.");
+            toast.error("Verification Error", { description: "Error verifying payment signature." });
           } finally {
             setIsProcessing(false);
           }
@@ -258,7 +260,7 @@ export default function DonatePage() {
       razorpayInstance.open();
     } catch (error) {
       console.error("Payment initiation error:", error);
-      alert(error.message || "Failed to initiate Razorpay payment.");
+      toast.error("Payment Failed", { description: error.message || "Failed to initiate Razorpay payment." });
       setIsProcessing(false);
     }
   };
@@ -502,7 +504,7 @@ export default function DonatePage() {
                         src={
                           serverQrCode ||
                           `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(
-                            `upi://pay?pa=bapuseva@upi&pn=Bapu%20Seva%20Trust&am=${amount || 2500}&cu=INR&tn=Donation%20to%20Bapu%20Seva%20Trust`
+                            `upi://pay?pa=7870726323@upi&pn=Bapu%20Seva%20Trust&am=${amount || 2500}&cu=INR&tn=Donation%20to%20Bapu%20Seva%20Trust`
                           )}`
                         }
                         alt="Bapu Seva Trust Dynamic UPI QR Code"
@@ -511,7 +513,7 @@ export default function DonatePage() {
                     </div>
                     <div className="text-[11px] text-muted-foreground space-y-1">
                       <p>
-                        UPI ID: <strong className="text-foreground">bapuseva@upi</strong>
+                        UPI / Phone: <strong className="text-foreground">7870726323</strong>
                       </p>
                       <p>
                         Amount: <strong className="text-primary font-extrabold text-xs">₹{amount ? amount.toLocaleString() : 0}</strong>
@@ -520,26 +522,33 @@ export default function DonatePage() {
                   </div>
                 )}
                 
-                <div className="bg-muted/60 p-3 rounded-2xl border border-border/60 space-y-2 text-xs">
+                <div className="bg-muted/60 p-3.5 rounded-2xl border border-border/60 space-y-2 text-xs">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-foreground">UPI ID:</span>
-                    <span className="font-bold text-primary bg-background px-2.5 py-1 rounded-md border border-border/40">bapuseva@upi</span>
+                    <span className="font-semibold text-foreground">UPI / Paytm / GPay / PhonePe:</span>
+                    <span className="font-bold text-primary bg-background px-2.5 py-1 rounded-md border border-border/40">7870726323</span>
                   </div>
                   <div className="flex items-center justify-between text-[11px]">
                     <span className="text-muted-foreground">Bank Name:</span>
-                    <span className="font-semibold text-foreground">State Bank of India</span>
+                    <span className="font-semibold text-foreground">Punjab National Bank</span>
                   </div>
                   <div className="flex items-center justify-between text-[11px]">
                     <span className="text-muted-foreground">Account Name:</span>
-                    <span className="font-semibold text-foreground">Bapu Seva Trust</span>
+                    <span className="font-semibold text-foreground">BAPU SEVA TRUST</span>
                   </div>
                   <div className="flex items-center justify-between text-[11px]">
-                    <span className="text-muted-foreground">Account No:</span>
-                    <span className="font-semibold text-foreground">401892847291</span>
+                    <span className="text-muted-foreground">Account No (A/C No):</span>
+                    <span className="font-mono font-bold text-foreground bg-background/80 px-2 py-0.5 rounded border border-border/40">6347000100046658</span>
                   </div>
                   <div className="flex items-center justify-between text-[11px]">
                     <span className="text-muted-foreground">IFSC Code:</span>
-                    <span className="font-semibold text-foreground">SBIN0001234</span>
+                    <span className="font-mono font-bold text-foreground bg-background/80 px-2 py-0.5 rounded border border-border/40">PUNJB0634700</span>
+                  </div>
+                  <div className="flex items-center justify-between text-[11px] pt-1.5 border-t border-border/40">
+                    <span className="text-muted-foreground">Official Email:</span>
+                    <span className="font-semibold text-primary">info@bapusevatrust.org</span>
+                  </div>
+                  <div className="text-[10px] text-muted-foreground text-center pt-1 font-medium italic">
+                    "Eligible for tax exemptions under sections 12A and 80G • Reg: BR/2021/0290486"
                   </div>
                 </div>
               </div>

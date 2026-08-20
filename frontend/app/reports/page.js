@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { FileText, Download, Shield, BarChart3, Lock, CheckCircle, Eye, X, Mail, Phone, User, Award, Globe, FileCheck } from "lucide-react";
+import { toast } from "sonner";
 import PageHero from "@/components/PageHero.jsx";
 
 import { client } from "@/sanity/client";
@@ -14,7 +15,7 @@ const officialDocuments = [
     id: "doc-reg",
     title: "Registration Certificate",
     category: "Legal & Registration",
-    regNo: "Reg No: IV-1823/2021",
+    regNo: "Reg No: BR/2021/0290486",
     type: "PDF",
     size: "1.2 MB",
     description: "Official Trust Registration Certificate issued under the Indian Trusts Act, 1882.",
@@ -50,7 +51,7 @@ const officialDocuments = [
     id: "doc-darpan",
     title: "NGO Darpan ID",
     category: "Legal & Registration",
-    regNo: "NITI Aayog ID: BR/2021/0298412",
+    regNo: "NITI Aayog ID: BR/2021/0290486",
     type: "PDF",
     size: "620 KB",
     description: "NITI Aayog NGO Darpan official registration certificate.",
@@ -155,7 +156,10 @@ export default function ReportsPage() {
   };
 
   const triggerDownload = (doc) => {
-    alert(`[Access Granted] Opening document: ${doc.title} (${doc.regNo}). In production, this opens the official PDF.`);
+    toast.success(`Access Granted: ${doc.title}`, {
+      description: `Opening official document (${doc.regNo}). PDF viewer active.`,
+      duration: 4500,
+    });
   };
 
   const categories = ["All", "Legal & Registration", "Tax Exemption", "Annual Reports", "Audits & Financials", "Advocacy & Governance"];

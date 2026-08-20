@@ -139,11 +139,11 @@ export const THEME_PRESETS = [
 ];
 
 export default function ThemePlayroom() {
-  const [activePreset, setActivePreset] = useState("user-blue-4shade");
+  const [activePreset, setActivePreset] = useState("cobalt-steel");
   const [isOpen, setIsOpen] = useState(false);
 
   const applyTheme = (presetId) => {
-    const target = THEME_PRESETS.find((p) => p.id === presetId) || THEME_PRESETS[0];
+    const target = THEME_PRESETS.find((p) => p.id === presetId) || THEME_PRESETS[4];
     setActivePreset(target.id);
 
     const root = document.documentElement;
@@ -165,10 +165,10 @@ export default function ThemePlayroom() {
       if (saved) {
         applyTheme(saved);
       } else {
-        applyTheme("user-blue-4shade");
+        applyTheme("cobalt-steel");
       }
     } catch (e) {
-      applyTheme("user-blue-4shade");
+      applyTheme("cobalt-steel");
     }
   }, []);
 
@@ -257,10 +257,10 @@ export default function ThemePlayroom() {
             </span>
 
             <button
-              onClick={() => applyTheme("user-blue-4shade")}
+              onClick={() => applyTheme("cobalt-steel")}
               className="text-blue-300 hover:underline flex items-center gap-1 font-semibold"
             >
-              <RotateCcw className="w-3 h-3" /> Reset to User Original 4-Blue Palette (#E3F2FD, #90CAF9, #2196F3, #0D47A1)
+              <RotateCcw className="w-3 h-3" /> Reset to Tech Cobalt & Steel Blue Palette (#EFF6FF, #BFDBFE, #3B82F6, #172554)
             </button>
           </div>
         </div>
