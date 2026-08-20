@@ -127,11 +127,11 @@ export default function NewsPage() {
   const displayPosts = sanityNews.length > 0
     ? sanityNews.map((n, i) => ({
         id: n._id || `sanity-${i}`,
-        title: n.title,
+        title: n.title || "Untitled Post",
         date: n.publishedAt ? new Date(n.publishedAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "Recent",
         category: n.category || "Field Update",
         image: n.mainImage ? urlFor(n.mainImage).url() : (typeof heroImage === 'string' ? heroImage : heroImage.src),
-        excerpt: n.excerpt,
+        excerpt: n.excerpt || "",
       }))
     : allNewsPosts;
 
@@ -140,8 +140,8 @@ export default function NewsPage() {
       selectedCategory === "All" || item.category === selectedCategory;
     const matchesSearch =
       searchQuery.trim() === "" ||
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+      (item.title || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (item.excerpt || "").toLowerCase().includes(searchQuery.toLowerCase());
 
     return matchesCategory && matchesSearch;
   };

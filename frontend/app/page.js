@@ -136,12 +136,12 @@ export default function HomePage() {
 
   const displayStories = sanityStories.length > 0
     ? sanityStories.map((s) => ({
-        name: s.name,
+        name: s.name || "Anonymous",
         age: s.age || 20,
         location: s.location || "Bihar",
         role: s.role || "Beneficiary",
-        quote: s.quote,
-        impact: s.impactOutcome,
+        quote: s.quote || "",
+        impact: s.impactOutcome || "",
       }))
     : impactStories;
 
@@ -341,7 +341,7 @@ export default function HomePage() {
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8 border-b border-border/60 pb-6">
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-display text-xl font-bold shadow-md">
-                    {displayStories[storyIndex].name[0]}
+                    {displayStories[storyIndex]?.name?.charAt(0) || "S"}
                   </div>
                   <div>
                     <h3 className="font-display text-2xl text-foreground">{displayStories[storyIndex].name}</h3>

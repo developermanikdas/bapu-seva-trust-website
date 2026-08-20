@@ -188,7 +188,7 @@ export default function TeamPage() {
 
   const displayCoreTeam = sanityTeam.length > 0
     ? sanityTeam.map((m) => ({
-        name: m.name,
+        name: m.name || "Team Member",
         role: m.role || "Team Member",
         location: m.location || "India",
         image: m.image ? urlFor(m.image).url() : null,
@@ -242,7 +242,7 @@ export default function TeamPage() {
               >
                 <div>
                   <div className="w-14 h-14 rounded-full bg-primary/10 text-primary flex items-center justify-center font-display text-xl font-bold mb-6">
-                    {mentor.name[0]}
+                    {mentor.name?.charAt(0) || "M"}
                   </div>
                   <h3 className="font-display text-xl text-foreground font-semibold mb-1">{mentor.name}</h3>
                   <p className="text-xs font-bold text-primary mb-4">{mentor.role}</p>
@@ -281,7 +281,7 @@ export default function TeamPage() {
                 Founder
               </span>
               <div className="w-24 h-24 rounded-full bg-primary/20 text-primary flex items-center justify-center font-display text-3xl font-bold mx-auto mb-6 shadow-md border-2 border-primary">
-                {founder.name[0]}
+                {founder.name?.charAt(0) || "F"}
               </div>
               <h3 className="font-display text-2xl sm:text-3xl text-foreground font-bold mb-1">
                 {founder.name} ({founder.age})
@@ -302,7 +302,7 @@ export default function TeamPage() {
               >
                 <div>
                   <div className="w-16 h-16 rounded-full bg-secondary/20 text-secondary-foreground flex items-center justify-center font-display text-2xl font-bold mx-auto mb-4 border border-secondary/30">
-                    {t.name[0]}
+                    {t.name?.charAt(0) || "T"}
                   </div>
                   <span className="text-[10px] font-extrabold uppercase bg-muted text-foreground px-3 py-1 rounded-full inline-block mb-3">
                     {t.title}
@@ -350,7 +350,7 @@ export default function TeamPage() {
                   />
                 ) : (
                   <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr from-primary/20 to-secondary/20 flex items-center justify-center font-display text-2xl font-bold text-primary mb-4 border-2 border-primary/20 group-hover:scale-105 transition-transform">
-                    {member.name[0]}
+                    {member.name?.charAt(0) || "M"}
                   </div>
                 )}
                 <div>
