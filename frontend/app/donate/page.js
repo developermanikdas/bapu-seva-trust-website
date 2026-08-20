@@ -84,7 +84,7 @@ export default function DonatePage() {
   const [showUpiQrModal, setShowUpiQrModal] = useState(false);
   const [serverQrCode, setServerQrCode] = useState(null);
 
-  const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5000";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5001";
 
   const handleAmountSelect = (val) => {
     setAmount(val);
@@ -335,8 +335,8 @@ export default function DonatePage() {
                     type="button"
                     onClick={() => setCitizenship("Indian")}
                     className={`w-1/2 py-2 rounded-lg transition-all ${citizenship === "Indian"
-                        ? "bg-primary text-primary-foreground shadow-md font-bold"
-                        : "text-muted-foreground hover:text-foreground"
+                      ? "bg-primary text-primary-foreground shadow-md font-bold"
+                      : "text-muted-foreground hover:text-foreground"
                       }`}
                   >
                     ● Indian Citizen
@@ -345,8 +345,8 @@ export default function DonatePage() {
                     type="button"
                     onClick={() => setCitizenship("Foreign")}
                     className={`w-1/2 py-2 rounded-lg transition-all ${citizenship === "Foreign"
-                        ? "bg-primary text-primary-foreground shadow-md font-bold"
-                        : "text-muted-foreground hover:text-foreground"
+                      ? "bg-primary text-primary-foreground shadow-md font-bold"
+                      : "text-muted-foreground hover:text-foreground"
                       }`}
                   >
                     ○ Foreign Citizen (FCRA)
@@ -359,8 +359,8 @@ export default function DonatePage() {
                     type="button"
                     onClick={() => setFrequency("One-Time")}
                     className={`py-2.5 rounded-xl text-xs font-bold transition-all border ${frequency === "One-Time"
-                        ? "bg-primary/10 border-primary text-primary shadow-sm"
-                        : "bg-background border-border text-muted-foreground hover:bg-muted"
+                      ? "bg-primary/10 border-primary text-primary shadow-sm"
+                      : "bg-background border-border text-muted-foreground hover:bg-muted"
                       }`}
                   >
                     Give One-Time
@@ -369,8 +369,8 @@ export default function DonatePage() {
                     type="button"
                     onClick={() => setFrequency("Monthly")}
                     className={`py-2.5 rounded-xl text-xs font-bold transition-all border ${frequency === "Monthly"
-                        ? "bg-primary/10 border-primary text-primary shadow-sm"
-                        : "bg-background border-border text-muted-foreground hover:bg-muted"
+                      ? "bg-primary/10 border-primary text-primary shadow-sm"
+                      : "bg-background border-border text-muted-foreground hover:bg-muted"
                       }`}
                   >
                     Give Monthly
@@ -387,8 +387,8 @@ export default function DonatePage() {
                         type="button"
                         onClick={() => handleAmountSelect(amt)}
                         className={`py-2.5 rounded-xl text-xs font-extrabold transition-all border ${amount === amt && !customAmount
-                            ? "bg-primary text-primary-foreground border-primary shadow-md scale-105"
-                            : "bg-background border-border text-foreground hover:bg-muted"
+                          ? "bg-primary text-primary-foreground border-primary shadow-md scale-105"
+                          : "bg-background border-border text-foreground hover:bg-muted"
                           }`}
                       >
                         ₹{amt.toLocaleString()}

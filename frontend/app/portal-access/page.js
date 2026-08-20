@@ -38,7 +38,7 @@ export default function PortalAccessPage() {
   const [isSubmittingCash, setIsSubmittingCash] = useState(false);
   const [cashSuccessMsg, setCashSuccessMsg] = useState("");
 
-  const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5000";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
   useEffect(() => {
     const savedToken = localStorage.getItem("bst_admin_token");

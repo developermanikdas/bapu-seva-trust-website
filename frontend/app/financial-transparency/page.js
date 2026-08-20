@@ -56,7 +56,7 @@ export default function FinancialTransparencyPage() {
   const [cashDonorPan, setCashDonorPan] = useState("");
   const [cashNotes, setCashNotes] = useState("");
 
-  const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5000";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
   const fetchFinancialData = async () => {
     setIsLoading(true);
