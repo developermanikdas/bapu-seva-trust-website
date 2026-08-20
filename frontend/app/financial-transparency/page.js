@@ -56,7 +56,7 @@ export default function FinancialTransparencyPage() {
   const [cashDonorPan, setCashDonorPan] = useState("");
   const [cashNotes, setCashNotes] = useState("");
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+  const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5000";
 
   const fetchFinancialData = async () => {
     setIsLoading(true);
@@ -233,7 +233,7 @@ export default function FinancialTransparencyPage() {
 
       <section className="section-padding">
         <div className="container-narrow space-y-8">
-          
+
           {/* Printable Header */}
           <div className="hidden print:block text-center border-b pb-6 mb-6">
             <h1 className="text-3xl font-bold">BAPU SEVA TRUST</h1>
@@ -295,38 +295,34 @@ export default function FinancialTransparencyPage() {
           {/* Action Toolbar & Filters */}
           <div className="print:hidden bg-card p-4 sm:p-6 rounded-3xl border border-border/80 shadow-sm space-y-4">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              
+
               {/* Filter Tabs */}
               <div className="flex items-center gap-1.5 bg-muted p-1 rounded-xl text-xs font-semibold overflow-x-auto">
                 <button
                   onClick={() => setActiveTab("all")}
-                  className={`px-4 py-2 rounded-lg transition-all ${
-                    activeTab === "all" ? "bg-primary text-primary-foreground font-bold shadow-sm" : "text-muted-foreground hover:text-foreground"
-                  }`}
+                  className={`px-4 py-2 rounded-lg transition-all ${activeTab === "all" ? "bg-primary text-primary-foreground font-bold shadow-sm" : "text-muted-foreground hover:text-foreground"
+                    }`}
                 >
                   All Activity ({combinedList.length})
                 </button>
                 <button
                   onClick={() => setActiveTab("inflow")}
-                  className={`px-4 py-2 rounded-lg transition-all ${
-                    activeTab === "inflow" ? "bg-primary text-primary-foreground font-bold shadow-sm" : "text-muted-foreground hover:text-foreground"
-                  }`}
+                  className={`px-4 py-2 rounded-lg transition-all ${activeTab === "inflow" ? "bg-primary text-primary-foreground font-bold shadow-sm" : "text-muted-foreground hover:text-foreground"
+                    }`}
                 >
                   Donation Inflow (₹)
                 </button>
                 <button
                   onClick={() => setActiveTab("outflow")}
-                  className={`px-4 py-2 rounded-lg transition-all ${
-                    activeTab === "outflow" ? "bg-primary text-primary-foreground font-bold shadow-sm" : "text-muted-foreground hover:text-foreground"
-                  }`}
+                  className={`px-4 py-2 rounded-lg transition-all ${activeTab === "outflow" ? "bg-primary text-primary-foreground font-bold shadow-sm" : "text-muted-foreground hover:text-foreground"
+                    }`}
                 >
                   Program Expenses (₹)
                 </button>
                 <button
                   onClick={() => setActiveTab("cash")}
-                  className={`px-4 py-2 rounded-lg transition-all ${
-                    activeTab === "cash" ? "bg-primary text-primary-foreground font-bold shadow-sm" : "text-muted-foreground hover:text-foreground"
-                  }`}
+                  className={`px-4 py-2 rounded-lg transition-all ${activeTab === "cash" ? "bg-primary text-primary-foreground font-bold shadow-sm" : "text-muted-foreground hover:text-foreground"
+                    }`}
                 >
                   Cash Records
                 </button>
@@ -356,7 +352,7 @@ export default function FinancialTransparencyPage() {
 
             {/* Filter Controls Row ("Filter By...") */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-border/60">
-              
+
               {/* Search Bar */}
               <div className="relative sm:col-span-1">
                 <Search className="w-4 h-4 text-muted-foreground absolute left-3 top-2.5" />
@@ -468,13 +464,12 @@ export default function FinancialTransparencyPage() {
                         </td>
                         <td className="px-6 py-4">
                           <span
-                            className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                              item.mode.toLowerCase().includes("cash")
+                            className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${item.mode.toLowerCase().includes("cash")
                                 ? "bg-amber-500/10 text-amber-700 border border-amber-500/20"
                                 : item.type === "INFLOW"
-                                ? "bg-emerald-500/10 text-emerald-700 border border-emerald-500/20"
-                                : "bg-blue-500/10 text-blue-700 border border-blue-500/20"
-                            }`}
+                                  ? "bg-emerald-500/10 text-emerald-700 border border-emerald-500/20"
+                                  : "bg-blue-500/10 text-blue-700 border border-blue-500/20"
+                              }`}
                           >
                             {item.mode}
                           </span>

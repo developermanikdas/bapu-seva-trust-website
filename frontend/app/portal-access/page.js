@@ -38,7 +38,7 @@ export default function PortalAccessPage() {
   const [isSubmittingCash, setIsSubmittingCash] = useState(false);
   const [cashSuccessMsg, setCashSuccessMsg] = useState("");
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+  const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5000";
 
   useEffect(() => {
     const savedToken = localStorage.getItem("bst_admin_token");
@@ -189,7 +189,7 @@ export default function PortalAccessPage() {
   return (
     <section className="section-padding bg-muted/30 min-h-[85vh] flex items-center justify-center">
       <div className="container-narrow max-w-xl">
-        
+
         {/* STEP 1: LOGIN FORM */}
         {step === 1 && (
           <div className="bg-card border border-border rounded-3xl p-6 sm:p-10 shadow-2xl space-y-6">

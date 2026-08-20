@@ -84,7 +84,7 @@ export default function DonatePage() {
   const [showUpiQrModal, setShowUpiQrModal] = useState(false);
   const [serverQrCode, setServerQrCode] = useState(null);
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+  const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5000";
 
   const handleAmountSelect = (val) => {
     setAmount(val);
@@ -206,15 +206,15 @@ export default function DonatePage() {
               body: JSON.stringify(
                 isMonthly
                   ? {
-                      razorpay_payment_id: response.razorpay_payment_id,
-                      razorpay_subscription_id: response.razorpay_subscription_id,
-                      razorpay_signature: response.razorpay_signature,
-                    }
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_subscription_id: response.razorpay_subscription_id,
+                    razorpay_signature: response.razorpay_signature,
+                  }
                   : {
-                      razorpay_order_id: response.razorpay_order_id,
-                      razorpay_payment_id: response.razorpay_payment_id,
-                      razorpay_signature: response.razorpay_signature,
-                    }
+                    razorpay_order_id: response.razorpay_order_id,
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_signature: response.razorpay_signature,
+                  }
               ),
             });
 
@@ -277,7 +277,7 @@ export default function DonatePage() {
       <section className="section-padding">
         <div className="container-narrow">
           <div className="grid lg:grid-cols-12 gap-10 items-start">
-            
+
             {/* LEFT COLUMN: Featured Hero Story Banner & Intro */}
             <div className="lg:col-span-7 space-y-6">
               <div className="relative rounded-3xl overflow-hidden shadow-xl group bg-black">
@@ -328,28 +328,26 @@ export default function DonatePage() {
             {/* RIGHT COLUMN: Sticky Inspiration Quick Donation Card */}
             <div className="lg:col-span-5 bg-card rounded-3xl p-6 sm:p-8 border-2 border-primary/20 shadow-2xl space-y-6 sticky top-24">
               <form onSubmit={handleDonateSubmit} className="space-y-5">
-                
+
                 {/* Citizenship Selector */}
                 <div className="flex items-center justify-between bg-muted p-1.5 rounded-xl text-xs font-semibold">
                   <button
                     type="button"
                     onClick={() => setCitizenship("Indian")}
-                    className={`w-1/2 py-2 rounded-lg transition-all ${
-                      citizenship === "Indian"
+                    className={`w-1/2 py-2 rounded-lg transition-all ${citizenship === "Indian"
                         ? "bg-primary text-primary-foreground shadow-md font-bold"
                         : "text-muted-foreground hover:text-foreground"
-                    }`}
+                      }`}
                   >
                     ● Indian Citizen
                   </button>
                   <button
                     type="button"
                     onClick={() => setCitizenship("Foreign")}
-                    className={`w-1/2 py-2 rounded-lg transition-all ${
-                      citizenship === "Foreign"
+                    className={`w-1/2 py-2 rounded-lg transition-all ${citizenship === "Foreign"
                         ? "bg-primary text-primary-foreground shadow-md font-bold"
                         : "text-muted-foreground hover:text-foreground"
-                    }`}
+                      }`}
                   >
                     ○ Foreign Citizen (FCRA)
                   </button>
@@ -360,22 +358,20 @@ export default function DonatePage() {
                   <button
                     type="button"
                     onClick={() => setFrequency("One-Time")}
-                    className={`py-2.5 rounded-xl text-xs font-bold transition-all border ${
-                      frequency === "One-Time"
+                    className={`py-2.5 rounded-xl text-xs font-bold transition-all border ${frequency === "One-Time"
                         ? "bg-primary/10 border-primary text-primary shadow-sm"
                         : "bg-background border-border text-muted-foreground hover:bg-muted"
-                    }`}
+                      }`}
                   >
                     Give One-Time
                   </button>
                   <button
                     type="button"
                     onClick={() => setFrequency("Monthly")}
-                    className={`py-2.5 rounded-xl text-xs font-bold transition-all border ${
-                      frequency === "Monthly"
+                    className={`py-2.5 rounded-xl text-xs font-bold transition-all border ${frequency === "Monthly"
                         ? "bg-primary/10 border-primary text-primary shadow-sm"
                         : "bg-background border-border text-muted-foreground hover:bg-muted"
-                    }`}
+                      }`}
                   >
                     Give Monthly
                   </button>
@@ -390,11 +386,10 @@ export default function DonatePage() {
                         key={amt}
                         type="button"
                         onClick={() => handleAmountSelect(amt)}
-                        className={`py-2.5 rounded-xl text-xs font-extrabold transition-all border ${
-                          amount === amt && !customAmount
+                        className={`py-2.5 rounded-xl text-xs font-extrabold transition-all border ${amount === amt && !customAmount
                             ? "bg-primary text-primary-foreground border-primary shadow-md scale-105"
                             : "bg-background border-border text-foreground hover:bg-muted"
-                        }`}
+                          }`}
                       >
                         ₹{amt.toLocaleString()}
                       </button>
@@ -521,7 +516,7 @@ export default function DonatePage() {
                     </div>
                   </div>
                 )}
-                
+
                 <div className="bg-muted/60 p-3.5 rounded-2xl border border-border/60 space-y-2 text-xs">
                   <div className="flex items-center justify-between">
                     <span className="font-semibold text-foreground">UPI / Paytm / GPay / PhonePe:</span>
